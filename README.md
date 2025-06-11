@@ -5,6 +5,8 @@
 [![Python Version](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![A2A Protocol](https://img.shields.io/badge/A2A-Protocol-orange.svg)](https://google.github.io/A2A/)
 
+---
+
 ## 📚 Overview
 
 This project demonstrates a state-of-the-art conversational agent built with [LlamaIndex Workflows](https://docs.llamaindex.ai/en/stable/understanding/workflows/) and exposed through the A2A (Agent-to-Agent) protocol. It enables natural conversations about your documents with features like file parsing, multi-turn dialogue, and real-time streaming responses.
@@ -55,12 +57,17 @@ sequenceDiagram
 ├── hosts/                    # Host implementations
 │   ├── cli/                 # Command-line interface host
 │   ├── multiagent/          # Multi-agent host implementation
-│   └── agent.py             # Base agent implementation
+│   ├── streamlit/           # Streamlit web interface host
+│   ├── agent.py             # Base agent implementation
+│   ├── __init__.py          # Package initialization
+│   └── README.md            # Host documentation
 ├── common/                   # Shared utilities and components
 ├── .env                     # Environment variables (create this)
 ├── pyproject.toml           # Project dependencies and metadata
 ├── uv.lock                  # UV package manager lock file
-└── .python-version          # Python version specification
+├── .python-version          # Python version specification
+├── .gitignore              # Git ignore rules
+└── .vscode/                # VS Code configuration
 ```
 
 ---
@@ -109,57 +116,89 @@ A2A (Agent-to-Agent) is a standardized protocol for agent communication that ena
 
 ### Prerequisites
 
-- Python 3.12 or higher
-- [UV](https://docs.astral.sh/uv/) package manager
+Before we begin, make sure you have:
+
+- Python 3.12 or higher installed
+- [UV](https://docs.astral.sh/uv/) package manager installed
 - Google Gemini API key ([Get it here](https://aistudio.google.com/))
 - LlamaParse API key ([Get it here](https://cloud.llamaindex.ai/project/073112ec-6bcb-464a-bbbe-0915fe1fff6b))
+- Sample file for testing: `Reference MSA Document.pdf` (included in the repository)
 
-### Installation
+---
 
-1. Clone the repository:
+### Step-by-Step Setup Guide
+
+Let's set up the project together:
+
+1. **Clone and Navigate**
 
    ```bash
+   # Clone the repository
    git clone <repository-url>
+
+   # Move into the project directory
    cd <repository-name>
    ```
 
-2. Set up your environment:
+2. **Set Up Environment Variables**
 
-   ```bash
-   # Create .env file with your API keys
-   echo "GOOGLE_API_KEY=your_api_key_here" >> .env
-   echo "LLAMA_CLOUD_API_KEY=your_api_key_here" >> .env
+   **Note : You can set the environment variables directly in your terminal:**
+
+   **PowerShell:**
+
+   ```powershell
+   # Set your Google API key
+   $env:GOOGLE_API_KEY="your_google_api_key_here"
+
+   # Set your Llama Cloud API key
+   $env:LLAMA_CLOUD_API_KEY="your_llama_cloud_api_key_here"
    ```
 
-3. Run the agent in your first terminal:
+3. **Start the Agent Server**
 
    ```bash
    # Navigate to the agent directory
    cd agents/llama_index_file_chat
 
-   # Run with default port (10010)
+   # Run the agent server
    uv run .
    ```
 
-4. Open a new terminal window and start the A2A client:
+   You should see a message indicating the server is running on port 10010.
 
-   ```bash
-   # Navigate to the CLI host directory
-   cd hosts/cli
+4. **Launch the Streamlit Interface**
 
-   # Start the A2A client
-   uv run . --agent http://localhost:10010
+   Open a new terminal window and run:
+
+   ```powershell
+   # Navigate to the streamlit host directory
+   cd hosts/streamlit
+
+   # Install dependencies
+   pip install -r requirements.txt
+
+   # Run the Streamlit app
+   streamlit run app.py
    ```
 
-> 💡 **Note**: Make sure to keep both terminals open - one running the agent server and another running the A2A client.
+   The Streamlit interface will automatically open in your default web browser at `http://localhost:8501`
 
-## 💡 Example Usage
+---
 
-1. Start a conversation:
-   ```bash
-   What do you want to send to the agent? (:q or quit to exit): What does this file talk about?
-   Select a file path to attach? (press enter to skip): ./Reference MSA Document.pdf
-   ```
+### Using the Interface
+
+Now that everything is set up, you can:
+
+1. Upload documents through the Streamlit interface
+2. Ask questions about your documents
+3. Get real-time responses with citations
+
+> 💡 **Note**:
+>
+> - Keep both terminal windows open while using the application
+> - The agent server must be running for the Streamlit interface to work
+
+## 📺 **Watch the Tutorial**: [How to Use the Interface](https://pragyaallc-my.sharepoint.com/:v:/g/personal/sachin_parmar_legalgraph_ai/ERseQqIMZtVJi-t6XhO9z70BVI6HjcyyYq3-53yYB6peYw?e=kMwQ6D&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D)
 
 ---
 
@@ -172,12 +211,16 @@ A2A (Agent-to-Agent) is a standardized protocol for agent communication that ena
 - **Context Management**: Session-based memory with persistence options
 - **A2A Protocol**: Full compliance with agent communication standards
 
+---
+
 ## ⚠️ Limitations
 
 - Text-only output (multimodal support coming soon)
 - LlamaParse free tier: 10K credits (~3333 pages)
 - In-memory session storage (not persistent)
 - Large document handling requires vector DB integration
+
+---
 
 ## 📚 Learn More
 

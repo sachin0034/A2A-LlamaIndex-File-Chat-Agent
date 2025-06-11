@@ -33,7 +33,8 @@ members = [
     "agents/semantickernel",
     "agents/mindsdb",
     "agents/ag2",
-    "agents/extended_agent_card_adk"
+    "agents/extended_agent_card_adk",
+    "hosts/streamlit"
 ]
 
 [build-system]
